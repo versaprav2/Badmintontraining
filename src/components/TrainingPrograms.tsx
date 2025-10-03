@@ -10,6 +10,7 @@ interface Drill {
   difficulty: "beginner" | "intermediate" | "advanced";
   icon: React.ReactNode;
   description: string;
+  videoUrl?: string;
 }
 
 const drills: Drill[] = [
@@ -19,6 +20,39 @@ const drills: Drill[] = [
     difficulty: "beginner",
     icon: <Footprints className="w-6 h-6" />,
     description: "Master basic court movement patterns and stepping techniques",
+    videoUrl: "https://www.youtube.com/watch?v=example1",
+  },
+  {
+    name: "Basic Serving Technique",
+    duration: "20 min",
+    difficulty: "beginner",
+    icon: <Target className="w-6 h-6" />,
+    description: "Learn proper short and long serve fundamentals",
+    videoUrl: "https://www.youtube.com/watch?v=example2",
+  },
+  {
+    name: "Clear Shot Practice",
+    duration: "25 min",
+    difficulty: "beginner",
+    icon: <Zap className="w-6 h-6" />,
+    description: "Develop consistent overhead clear technique",
+    videoUrl: "https://www.youtube.com/watch?v=example3",
+  },
+  {
+    name: "Grip Mastery",
+    duration: "15 min",
+    difficulty: "beginner",
+    icon: <CheckCircle2 className="w-6 h-6" />,
+    description: "Perfect forehand and backhand grip transitions",
+    videoUrl: "https://www.youtube.com/watch?v=example4",
+  },
+  {
+    name: "Shadow Badminton",
+    duration: "25 min",
+    difficulty: "beginner",
+    icon: <Footprints className="w-6 h-6" />,
+    description: "Practice movement patterns without a shuttlecock",
+    videoUrl: "https://www.youtube.com/watch?v=example5",
   },
   {
     name: "Smash Power Training",
@@ -26,13 +60,23 @@ const drills: Drill[] = [
     difficulty: "intermediate",
     icon: <Zap className="w-6 h-6" />,
     description: "Develop explosive smash power with targeted exercises",
+    videoUrl: "https://www.youtube.com/watch?v=example6",
   },
   {
-    name: "Advanced Drop Shots",
-    duration: "40 min",
-    difficulty: "advanced",
+    name: "Drive Shot Drills",
+    duration: "30 min",
+    difficulty: "intermediate",
     icon: <Target className="w-6 h-6" />,
-    description: "Perfect your drop shot accuracy and deception",
+    description: "Master fast-paced flat drives at mid-court",
+    videoUrl: "https://www.youtube.com/watch?v=example7",
+  },
+  {
+    name: "Net Kill Practice",
+    duration: "35 min",
+    difficulty: "intermediate",
+    icon: <CheckCircle2 className="w-6 h-6" />,
+    description: "Sharpen your net kill and interception skills",
+    videoUrl: "https://www.youtube.com/watch?v=example8",
   },
   {
     name: "Endurance Building",
@@ -40,13 +84,7 @@ const drills: Drill[] = [
     difficulty: "intermediate",
     icon: <Dumbbell className="w-6 h-6" />,
     description: "Increase stamina for longer, more intense matches",
-  },
-  {
-    name: "Net Play Mastery",
-    duration: "35 min",
-    difficulty: "advanced",
-    icon: <CheckCircle2 className="w-6 h-6" />,
-    description: "Refine net shots, lifts, and front-court dominance",
+    videoUrl: "https://www.youtube.com/watch?v=example9",
   },
   {
     name: "Defensive Tactics",
@@ -54,6 +92,71 @@ const drills: Drill[] = [
     difficulty: "intermediate",
     icon: <Target className="w-6 h-6" />,
     description: "Learn to read opponents and respond defensively",
+    videoUrl: "https://www.youtube.com/watch?v=example10",
+  },
+  {
+    name: "Multi-Shuttle Training",
+    duration: "50 min",
+    difficulty: "intermediate",
+    icon: <Zap className="w-6 h-6" />,
+    description: "High-intensity drill with continuous shuttle feeding",
+    videoUrl: "https://www.youtube.com/watch?v=example11",
+  },
+  {
+    name: "Advanced Drop Shots",
+    duration: "40 min",
+    difficulty: "advanced",
+    icon: <Target className="w-6 h-6" />,
+    description: "Perfect your drop shot accuracy and deception",
+    videoUrl: "https://www.youtube.com/watch?v=example12",
+  },
+  {
+    name: "Net Play Mastery",
+    duration: "35 min",
+    difficulty: "advanced",
+    icon: <CheckCircle2 className="w-6 h-6" />,
+    description: "Refine net shots, lifts, and front-court dominance",
+    videoUrl: "https://www.youtube.com/watch?v=example13",
+  },
+  {
+    name: "Deceptive Shots",
+    duration: "45 min",
+    difficulty: "advanced",
+    icon: <Target className="w-6 h-6" />,
+    description: "Master slice drops, reverse slices, and feints",
+    videoUrl: "https://www.youtube.com/watch?v=example14",
+  },
+  {
+    name: "Jump Smash Technique",
+    duration: "40 min",
+    difficulty: "advanced",
+    icon: <Zap className="w-6 h-6" />,
+    description: "Develop power and control in jump smashes",
+    videoUrl: "https://www.youtube.com/watch?v=example15",
+  },
+  {
+    name: "Match Simulation",
+    duration: "90 min",
+    difficulty: "advanced",
+    icon: <Dumbbell className="w-6 h-6" />,
+    description: "Full match scenarios with pressure situations",
+    videoUrl: "https://www.youtube.com/watch?v=example16",
+  },
+  {
+    name: "Court Coverage Optimization",
+    duration: "50 min",
+    difficulty: "advanced",
+    icon: <Footprints className="w-6 h-6" />,
+    description: "Maximize efficiency in court movement and recovery",
+    videoUrl: "https://www.youtube.com/watch?v=example17",
+  },
+  {
+    name: "Advanced Serve Variations",
+    duration: "30 min",
+    difficulty: "advanced",
+    icon: <Target className="w-6 h-6" />,
+    description: "Master flick serves, drive serves, and serve placement",
+    videoUrl: "https://www.youtube.com/watch?v=example18",
   },
 ];
 
@@ -71,7 +174,10 @@ const getDifficultyColor = (difficulty: string) => {
 };
 
 export const TrainingPrograms = () => {
-  const handleStartDrill = (drillName: string) => {
+  const handleStartDrill = (drillName: string, videoUrl?: string) => {
+    if (videoUrl) {
+      window.open(videoUrl, "_blank");
+    }
     toast.success(`Starting "${drillName}" training!`, {
       description: "Get ready to improve your game!",
     });
@@ -113,9 +219,9 @@ export const TrainingPrograms = () => {
             <Button
               variant="outline"
               className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all"
-              onClick={() => handleStartDrill(drill.name)}
+              onClick={() => handleStartDrill(drill.name, drill.videoUrl)}
             >
-              Start Training
+              {drill.videoUrl ? "Watch & Train" : "Start Training"}
             </Button>
           </Card>
         ))}

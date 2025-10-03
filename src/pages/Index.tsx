@@ -1,17 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Activity, Target, Trophy, Menu, X } from "lucide-react";
+import { Activity, Target, Trophy, Menu, X, LogOut, User } from "lucide-react";
 import { Dashboard } from "@/components/Dashboard";
 import { MatchTracker } from "@/components/MatchTracker";
 import { TrainingPrograms } from "@/components/TrainingPrograms";
+import { AuthForm, UserProfile } from "@/components/AuthForm";
 import heroImage from "@/assets/hero-badminton.jpg";
+import { toast } from "sonner";
 
 type View = "home" | "dashboard" | "matches" | "training";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<View>("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("userProfile");
+    if (saved) {
+      setUserProfile(JSON.parse(saved));
+    }
+  }, []);
+
+  const handleAuth = (profile: UserProfile) => {
+    setUserProfile(profile);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userProfile");
+    localStorage.removeItem("matches");
+    setUserProfile(null);
+    setCurrentView("home");
+    toast.success("Logged out successfully");
+  };
+
+  if (!userProfile) {
+    return <AuthForm onAuth={handleAuth} />;
+  }
 
   const navigationItems = [
     { id: "dashboard" as View, label: "Dashboard", icon: <Activity className="w-5 h-5" /> },
@@ -130,7 +156,7 @@ const Index = () => {
                 <Trophy className="w-6 h-6 text-white" />
               </div>
               <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                BadmintonPro
+                BadmintonTrain
               </span>
             </button>
 
@@ -147,6 +173,13 @@ const Index = () => {
                   {item.label}
                 </Button>
               ))}
+              <Button variant="ghost" className="gap-2">
+                <User className="w-5 h-5" />
+                {userProfile.name}
+              </Button>
+              <Button variant="ghost" onClick={handleLogout} className="gap-2">
+                <LogOut className="w-5 h-5" />
+              </Button>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -175,6 +208,14 @@ const Index = () => {
                   {item.label}
                 </Button>
               ))}
+              <Button variant="ghost" className="w-full justify-start gap-2">
+                <User className="w-5 h-5" />
+                {userProfile.name}
+              </Button>
+              <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-2">
+                <LogOut className="w-5 h-5" />
+                Logout
+              </Button>
             </nav>
           )}
         </div>
@@ -188,7 +229,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t mt-16 py-8">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>© 2025 BadmintonPro. Train smarter, play better.</p>
+          <p>© 2025 BadmintonTrain. Train smarter, play better.</p>
         </div>
       </footer>
     </div>
