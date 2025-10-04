@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Clock, Zap, Target, Footprints, Dumbbell } from "lucide-react";
 import { toast } from "sonner";
+import { WorkoutTimer } from "./WorkoutTimer";
 
 interface Drill {
   name: string;
@@ -191,6 +192,8 @@ export const TrainingPrograms = () => {
           Structured drills to elevate your badminton skills
         </p>
       </div>
+
+      <WorkoutTimer />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {drills.map((drill, index) => (
