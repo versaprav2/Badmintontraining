@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Trophy, Target, Zap, Award, Star, Flame, TrendingUp, Lock } from "lucide-react";
+import { Trophy, Target, Zap, Award, Star, Flame, TrendingUp, Lock, Calendar } from "lucide-react";
 
 interface Achievement {
   id: string;
@@ -21,23 +21,32 @@ const achievementsList: Omit<Achievement, "unlocked" | "progress">[] = [
   { id: "first-match", name: "First Steps", description: "Log your first match", icon: <Trophy className="w-6 h-6" />, category: "matches", maxProgress: 1, xp: 50 },
   { id: "10-matches", name: "Getting Serious", description: "Log 10 matches", icon: <Trophy className="w-6 h-6" />, category: "matches", maxProgress: 10, xp: 200 },
   { id: "50-matches", name: "Dedicated Player", description: "Log 50 matches", icon: <Trophy className="w-6 h-6" />, category: "matches", maxProgress: 50, xp: 500 },
+  { id: "100-matches", name: "Century Club", description: "Log 100 matches", icon: <Trophy className="w-6 h-6" />, category: "matches", maxProgress: 100, xp: 1000 },
   { id: "first-win", name: "Taste of Victory", description: "Win your first match", icon: <Award className="w-6 h-6" />, category: "matches", maxProgress: 1, xp: 100 },
   { id: "5-win-streak", name: "On Fire", description: "Win 5 matches in a row", icon: <Flame className="w-6 h-6" />, category: "matches", maxProgress: 5, xp: 300 },
+  { id: "10-win-streak", name: "Dominating", description: "Win 10 matches in a row", icon: <Flame className="w-6 h-6" />, category: "matches", maxProgress: 10, xp: 750 },
+  { id: "match-drill-combo", name: "Double Down", description: "Complete a drill and match on the same day (5 times)", icon: <Zap className="w-6 h-6" />, category: "matches", maxProgress: 5, xp: 400 },
   
   // Training
   { id: "first-drill", name: "Training Begins", description: "Complete your first drill", icon: <Target className="w-6 h-6" />, category: "training", maxProgress: 1, xp: 50 },
   { id: "10-drills", name: "Skill Builder", description: "Complete 10 drills", icon: <Target className="w-6 h-6" />, category: "training", maxProgress: 10, xp: 250 },
+  { id: "50-drills", name: "Training Master", description: "Complete 50 drills", icon: <Target className="w-6 h-6" />, category: "training", maxProgress: 50, xp: 750 },
   { id: "all-fundamentals", name: "Master the Basics", description: "Complete all fundamental drills", icon: <Star className="w-6 h-6" />, category: "training", maxProgress: 18, xp: 500 },
   { id: "start-plan", name: "Committed", description: "Start a training plan", icon: <TrendingUp className="w-6 h-6" />, category: "training", maxProgress: 1, xp: 100 },
+  { id: "5-days-training", name: "Consistent Trainer", description: "Train 5 weekdays in a row", icon: <Calendar className="w-6 h-6" />, category: "training", maxProgress: 5, xp: 350 },
   
   // Streaks
   { id: "3-day-streak", name: "Building Habits", description: "3-day training streak", icon: <Flame className="w-6 h-6" />, category: "streaks", maxProgress: 3, xp: 150 },
   { id: "7-day-streak", name: "Week Warrior", description: "7-day training streak", icon: <Flame className="w-6 h-6" />, category: "streaks", maxProgress: 7, xp: 300 },
+  { id: "14-day-streak", name: "Dedicated", description: "14-day training streak", icon: <Flame className="w-6 h-6" />, category: "streaks", maxProgress: 14, xp: 600 },
   { id: "30-day-streak", name: "Unstoppable", description: "30-day training streak", icon: <Flame className="w-6 h-6" />, category: "streaks", maxProgress: 30, xp: 1000 },
   
   // Milestones
   { id: "1000-xp", name: "Rising Star", description: "Earn 1,000 XP", icon: <Star className="w-6 h-6" />, category: "milestones", maxProgress: 1000, xp: 0 },
   { id: "5000-xp", name: "Elite Player", description: "Earn 5,000 XP", icon: <Star className="w-6 h-6" />, category: "milestones", maxProgress: 5000, xp: 0 },
+  { id: "10000-xp", name: "Legend", description: "Earn 10,000 XP", icon: <Star className="w-6 h-6" />, category: "milestones", maxProgress: 10000, xp: 0 },
+  { id: "level-10", name: "Experienced", description: "Reach level 10", icon: <Star className="w-6 h-6" />, category: "milestones", maxProgress: 10, xp: 0 },
+  { id: "level-20", name: "Expert", description: "Reach level 20", icon: <Star className="w-6 h-6" />, category: "milestones", maxProgress: 20, xp: 0 },
 ];
 
 export const Achievements = () => {
@@ -72,6 +81,24 @@ export const Achievements = () => {
       }
     });
 
+    // Check combo achievements
+    const activityLog = JSON.parse(localStorage.getItem("activityLog") || "[]");
+    const activityByDate: { [date: string]: Set<string> } = {};
+    activityLog.forEach((activity: any) => {
+      const date = new Date(activity.date).toISOString().split('T')[0];
+      if (!activityByDate[date]) activityByDate[date] = new Set();
+      activityByDate[date].add(activity.type);
+    });
+    const comboDays = Object.values(activityByDate).filter(types => types.has("match") && types.has("drill")).length;
+    
+    // Check weekday training
+    const weekdayTraining = activityLog.filter((a: any) => {
+      const day = new Date(a.date).getDay();
+      return a.type === "drill" && day >= 1 && day <= 5;
+    });
+    
+    const level = Math.floor(savedXP / 500) + 1;
+
     const processedAchievements = achievementsList.map(achievement => {
       let unlocked = false;
       let progress = 0;
@@ -89,6 +116,10 @@ export const Achievements = () => {
           progress = matchCount;
           unlocked = matchCount >= 50;
           break;
+        case "100-matches":
+          progress = matchCount;
+          unlocked = matchCount >= 100;
+          break;
         case "first-win":
           progress = Math.min(wins, 1);
           unlocked = wins >= 1;
@@ -96,6 +127,14 @@ export const Achievements = () => {
         case "5-win-streak":
           progress = maxWinStreak;
           unlocked = maxWinStreak >= 5;
+          break;
+        case "10-win-streak":
+          progress = maxWinStreak;
+          unlocked = maxWinStreak >= 10;
+          break;
+        case "match-drill-combo":
+          progress = comboDays;
+          unlocked = comboDays >= 5;
           break;
         case "first-drill":
           progress = Math.min(completedDrills.size, 1);
@@ -105,6 +144,10 @@ export const Achievements = () => {
           progress = completedDrills.size;
           unlocked = completedDrills.size >= 10;
           break;
+        case "50-drills":
+          progress = completedDrills.size;
+          unlocked = completedDrills.size >= 50;
+          break;
         case "all-fundamentals":
           progress = completedDrills.size;
           unlocked = completedDrills.size >= 18;
@@ -113,6 +156,10 @@ export const Achievements = () => {
           progress = Object.keys(activePlans).length > 0 ? 1 : 0;
           unlocked = Object.keys(activePlans).length > 0;
           break;
+        case "5-days-training":
+          progress = weekdayTraining.length;
+          unlocked = weekdayTraining.length >= 5;
+          break;
         case "3-day-streak":
           progress = savedStreak;
           unlocked = savedStreak >= 3;
@@ -120,6 +167,10 @@ export const Achievements = () => {
         case "7-day-streak":
           progress = savedStreak;
           unlocked = savedStreak >= 7;
+          break;
+        case "14-day-streak":
+          progress = savedStreak;
+          unlocked = savedStreak >= 14;
           break;
         case "30-day-streak":
           progress = savedStreak;
@@ -132,6 +183,18 @@ export const Achievements = () => {
         case "5000-xp":
           progress = savedXP;
           unlocked = savedXP >= 5000;
+          break;
+        case "10000-xp":
+          progress = savedXP;
+          unlocked = savedXP >= 10000;
+          break;
+        case "level-10":
+          progress = level;
+          unlocked = level >= 10;
+          break;
+        case "level-20":
+          progress = level;
+          unlocked = level >= 20;
           break;
       }
 
@@ -264,9 +327,9 @@ export const Achievements = () => {
               .map(achievement => (
                 <Card
                   key={achievement.id}
-                  className={`p-5 transition-all ${
+                  className={`p-5 transition-all duration-300 hover:scale-105 ${
                     achievement.unlocked
-                      ? `bg-gradient-to-br ${getCategoryColor(category)} hover:shadow-lg`
+                      ? `bg-gradient-to-br ${getCategoryColor(category)} hover:shadow-lg animate-fade-in`
                       : 'opacity-60 hover:opacity-80'
                   }`}
                 >

@@ -88,6 +88,15 @@ export const useGamification = () => {
       plan: 100,
     };
 
+    // Log activity for analytics
+    const activityLog = JSON.parse(localStorage.getItem("activityLog") || "[]");
+    activityLog.push({
+      date: new Date().toISOString(),
+      type: activityType,
+      xp: xpRewards[activityType],
+    });
+    localStorage.setItem("activityLog", JSON.stringify(activityLog));
+
     updateStreak();
     addXP(xpRewards[activityType]);
   };

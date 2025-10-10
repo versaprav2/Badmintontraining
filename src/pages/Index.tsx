@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Activity, Target, Trophy, Menu, X, LogOut, User, Timer, Calendar, Award } from "lucide-react";
+import { Activity, Target, Trophy, Menu, X, LogOut, User, Timer, Calendar, Award, BarChart3, Flame, Flag } from "lucide-react";
 import { Dashboard } from "@/components/Dashboard";
 import { MatchTracker } from "@/components/MatchTracker";
 import { TrainingPrograms } from "@/components/TrainingPrograms";
@@ -12,12 +12,15 @@ import { Onboarding } from "@/components/Onboarding";
 import { QuickActions } from "@/components/QuickActions";
 import { MilestoneCelebration, checkMilestones } from "@/components/MilestoneCelebration";
 import { ShareProgress } from "@/components/ShareProgress";
+import { ProgressHub } from "@/components/ProgressHub";
+import { Challenges } from "@/components/Challenges";
+import { Goals } from "@/components/Goals";
 import { AuthForm, UserProfile } from "@/components/AuthForm";
 import heroImage from "@/assets/hero-badminton.jpg";
 import { toast } from "sonner";
 import { useGamification } from "@/hooks/useGamification";
 
-type View = "home" | "dashboard" | "matches" | "plans" | "fundamentals" | "timer" | "achievements";
+type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<View>("home");
@@ -99,6 +102,9 @@ const Index = () => {
 
   const navigationItems = [
     { id: "dashboard" as View, label: "Dashboard", icon: <Activity className="w-5 h-5" /> },
+    { id: "progress" as View, label: "Progress", icon: <BarChart3 className="w-5 h-5" /> },
+    { id: "challenges" as View, label: "Challenges", icon: <Flame className="w-5 h-5" /> },
+    { id: "goals" as View, label: "Goals", icon: <Flag className="w-5 h-5" /> },
     { id: "matches" as View, label: "Matches", icon: <Trophy className="w-5 h-5" /> },
     { id: "plans" as View, label: "Training Plans", icon: <Calendar className="w-5 h-5" /> },
     { id: "fundamentals" as View, label: "Fundamentals", icon: <Target className="w-5 h-5" /> },
@@ -110,6 +116,12 @@ const Index = () => {
     switch (currentView) {
       case "dashboard":
         return <Dashboard />;
+      case "progress":
+        return <ProgressHub />;
+      case "challenges":
+        return <Challenges />;
+      case "goals":
+        return <Goals />;
       case "matches":
         return <MatchTracker />;
       case "plans":
