@@ -15,57 +15,44 @@ import { ShareProgress } from "@/components/ShareProgress";
 import { ProgressHub } from "@/components/ProgressHub";
 import { Challenges } from "@/components/Challenges";
 import { Goals } from "@/components/Goals";
-import { AuthForm, UserProfile } from "@/components/AuthForm";
 import heroImage from "@/assets/hero-badminton.jpg";
 import { toast } from "sonner";
 import { useGamification } from "@/hooks/useGamification";
+import { useAuth } from "@/hooks/useAuth";
 
 type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<View>("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [milestone, setMilestone] = useState<any>(null);
   const [shareData, setShareData] = useState<any>(null);
   const { addXP, updateStreak } = useGamification();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
-    const saved = localStorage.getItem("userProfile");
-    if (saved) {
-      setUserProfile(JSON.parse(saved));
-      
-      // Check if onboarding completed
-      const onboardingComplete = localStorage.getItem("onboardingComplete");
-      if (!onboardingComplete) {
-        setShowOnboarding(true);
-      }
-
-      // Check for milestones
-      const detectedMilestone = checkMilestones();
-      if (detectedMilestone) {
-        setMilestone(detectedMilestone);
-        if (detectedMilestone.xp) {
-          addXP(detectedMilestone.xp);
-        }
-      }
-
-      // Update streak
-      updateStreak();
+    // Check if onboarding completed
+    const onboardingComplete = localStorage.getItem("onboardingComplete");
+    if (!onboardingComplete) {
+      setShowOnboarding(true);
     }
+
+    // Check for milestones
+    const detectedMilestone = checkMilestones();
+    if (detectedMilestone) {
+      setMilestone(detectedMilestone);
+      if (detectedMilestone.xp) {
+        addXP(detectedMilestone.xp);
+      }
+    }
+
+    // Update streak
+    updateStreak();
   }, []);
 
-  const handleAuth = (profile: UserProfile) => {
-    setUserProfile(profile);
-    setShowOnboarding(true);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("userProfile");
-    localStorage.removeItem("matches");
-    setUserProfile(null);
-    setCurrentView("home");
+  const handleLogout = async () => {
+    await signOut();
     toast.success("Logged out successfully");
   };
 
@@ -96,9 +83,6 @@ const Index = () => {
     }
   };
 
-  if (!userProfile) {
-    return <AuthForm onAuth={handleAuth} />;
-  }
 
   const navigationItems = [
     { id: "dashboard" as View, label: "Dashboard", icon: <Activity className="w-5 h-5" /> },
@@ -254,7 +238,7 @@ const Index = () => {
               ))}
               <Button variant="ghost" className="gap-2">
                 <User className="w-5 h-5" />
-                {userProfile.name}
+                {user?.email}
               </Button>
               <Button variant="ghost" onClick={handleLogout} className="gap-2">
                 <LogOut className="w-5 h-5" />
@@ -289,7 +273,7 @@ const Index = () => {
               ))}
               <Button variant="ghost" className="w-full justify-start gap-2">
                 <User className="w-5 h-5" />
-                {userProfile.name}
+                {user?.email}
               </Button>
               <Button variant="ghost" onClick={handleLogout} className="w-full justify-start gap-2">
                 <LogOut className="w-5 h-5" />
