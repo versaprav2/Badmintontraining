@@ -15,7 +15,7 @@ import { QuickActions } from "@/components/QuickActions";
 import { MilestoneCelebration, checkMilestones } from "@/components/MilestoneCelebration";
 import { ShareProgress } from "@/components/ShareProgress";
 import { ProgressHub } from "@/components/ProgressHub";
-import { Challenges } from "@/components/Challenges";
+import Challenges from "@/components/Challenges";
 import { Goals } from "@/components/Goals";
 import heroImage from "@/assets/hero-badminton.jpg";
 import { toast } from "sonner";
