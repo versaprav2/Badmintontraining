@@ -3,8 +3,14 @@ name: Deploy Frontend to Hostinger
 on:
   push:
     branches:
-      - main # Change this to the branch you deploy from (e.g., master or main)
-  workflow_dispatch: # Allows manual triggering from the Actions tab
+      - main # Change this to your primary branch if it is named 'master'
+  workflow_dispatch: # Allows manual run from the Actions tab
+
+# 🚨 CRITICAL FIX: Add permissions for the deploy action
+permissions:
+  contents: read      # Required for checking out the code
+  pages: write        # Required for writing to the GitHub Pages site
+  id-token: write     # Required for the secure token used by actions/deploy-pages@v4
 
 jobs:
   build:
@@ -16,14 +22,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20 # Use a modern Node version
+          node-version: 20 # Use a stable, modern version
 
-      # --- BUILD STEP (Crucial for VITE/REACT/LOVABLE) ---
+      # --- BUILD STEPS ---
       - name: Install dependencies
         run: npm install
 
-      - name: Build static files (e.g., using Vite)
-        # Assuming your build command is 'npm run build'
+      - name: Build static files (Adjust command if needed)
+        # This command runs your build tool (e.g., Vite/Webpack/CRA)
         run: npm run build
 
       - name: Setup Pages
@@ -32,8 +38,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # This should match the directory where your build output goes 
-          # (usually 'dist' for Vite, or 'build' for Create React App)
+          # This must match your build output directory (e.g., 'dist' for Vite)
           path: './dist' 
 
   deploy:
