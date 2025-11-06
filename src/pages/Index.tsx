@@ -17,12 +17,13 @@ import { ShareProgress } from "@/components/ShareProgress";
 import { ProgressHub } from "@/components/ProgressHub";
 import Challenges from "@/components/Challenges";
 import { Goals } from "@/components/Goals";
+import { PeriodizationHub } from "@/components/PeriodizationHub";
 import heroImage from "@/assets/hero-badminton.jpg";
 import { toast } from "sonner";
 import { useGamification } from "@/hooks/useGamification";
 import { useAuth } from "@/hooks/useAuth";
 
-type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements";
+type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements" | "periodization";
 
 const Index = () => {
   const [currentView, setCurrentView] = useState<View>("home");
@@ -100,6 +101,8 @@ const Index = () => {
         return <WorkoutTimer />;
       case "achievements":
         return <Achievements />;
+      case "periodization":
+        return <PeriodizationHub />;
       default:
         return (
           <div className="space-y-12">
@@ -210,6 +213,7 @@ const Index = () => {
                 {currentView === "fundamentals" && "Fundamentals"}
                 {currentView === "timer" && "Workout Timer"}
                 {currentView === "achievements" && "Achievements"}
+                {currentView === "periodization" && "Periodization"}
               </h1>
             </div>
           </header>

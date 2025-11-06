@@ -10,7 +10,8 @@ import {
   Flag,
   Home,
   LogOut,
-  User
+  User,
+  TrendingUp
 } from "lucide-react";
 import {
   Sidebar,
@@ -26,7 +27,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
-type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements";
+type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements" | "periodization";
 
 interface AppSidebarProps {
   currentView: View;
@@ -40,6 +41,7 @@ const mainItems = [
 ];
 
 const trainingItems = [
+  { id: "periodization" as View, label: "Periodization", icon: TrendingUp },
   { id: "plans" as View, label: "Training Plans", icon: Calendar },
   { id: "fundamentals" as View, label: "Fundamentals", icon: Target },
   { id: "timer" as View, label: "Timer", icon: Timer },
