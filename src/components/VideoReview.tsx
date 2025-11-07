@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Upload, Video, Calendar, Clock, User, AlertCircle, Play, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/hooks/useLanguage";
 
 interface VideoEntry {
   id: string;
@@ -21,6 +22,7 @@ interface VideoEntry {
 
 export const VideoReview = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [videos, setVideos] = useState<VideoEntry[]>([
     {
       id: "1",
@@ -105,28 +107,27 @@ export const VideoReview = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold mb-2">Video Review</h2>
-        <p className="text-muted-foreground">Upload and analyze your match recordings</p>
+        <h2 className="text-3xl font-bold mb-2">{t("video.title")}</h2>
+        <p className="text-muted-foreground">{t("video.subtitle")}</p>
       </div>
 
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          <strong>Note:</strong> Video storage and AI analysis require Lovable Cloud. 
-          Enable Cloud in project settings to unlock full functionality.
+          {t("video.alert")}
         </AlertDescription>
       </Alert>
 
       <Card>
         <CardHeader>
-          <CardTitle>Upload Match Video</CardTitle>
+          <CardTitle>{t("video.upload.title")}</CardTitle>
           <CardDescription>
-            Upload a recording of your match for analysis and review
+            {t("video.upload.desc")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="video-upload">Video File</Label>
+            <Label htmlFor="video-upload">{t("video.upload.file")}</Label>
             <div className="flex items-center gap-2">
               <Input
                 id="video-upload"
@@ -151,17 +152,17 @@ export const VideoReview = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="opponent">Opponent Name</Label>
+              <Label htmlFor="opponent">{t("video.upload.opponent")}</Label>
               <Input
                 id="opponent"
-                placeholder="e.g., John Smith"
+                placeholder={t("video.upload.opponentPlaceholder")}
                 value={opponent}
                 onChange={(e) => setOpponent(e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="match-date">Match Date</Label>
+              <Label htmlFor="match-date">{t("video.upload.matchDate")}</Label>
               <Input
                 id="match-date"
                 type="date"
@@ -172,10 +173,10 @@ export const VideoReview = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="notes">Notes & Observations</Label>
+            <Label htmlFor="notes">{t("video.upload.notes")}</Label>
             <Textarea
               id="notes"
-              placeholder="Add any notes about the match, areas to focus on, etc."
+              placeholder={t("video.upload.notesPlaceholder")}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
@@ -188,21 +189,21 @@ export const VideoReview = () => {
             disabled={!selectedFile || !opponent || !matchDate}
           >
             <Upload className="mr-2 h-4 w-4" />
-            Upload Video
+            {t("video.upload.button")}
           </Button>
         </CardContent>
       </Card>
 
       <div>
-        <h3 className="text-xl font-semibold mb-4">Your Match Videos</h3>
+        <h3 className="text-xl font-semibold mb-4">{t("video.list.title")}</h3>
         <div className="grid gap-4">
           {videos.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-12 text-center">
                 <Video className="h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No videos uploaded yet</p>
+                <p className="text-muted-foreground">{t("video.list.empty")}</p>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Upload your first match video to get started
+                  {t("video.list.emptyDesc")}
                 </p>
               </CardContent>
             </Card>
@@ -220,7 +221,7 @@ export const VideoReview = () => {
                         <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
                           <div className="flex items-center gap-1">
                             <User className="h-4 w-4" />
-                            <span>vs {video.opponent}</span>
+                            <span>{t("video.vs")} {video.opponent}</span>
                           </div>
                           <div className="flex items-center gap-1">
                             <Calendar className="h-4 w-4" />
@@ -239,10 +240,10 @@ export const VideoReview = () => {
                         <div className="flex gap-2 pt-2">
                           <Button size="sm" variant="outline">
                             <Play className="mr-2 h-4 w-4" />
-                            Watch
+                            {t("video.list.watch")}
                           </Button>
                           <Button size="sm" variant="outline">
-                            View Analysis
+                            {t("video.list.analysis")}
                           </Button>
                           <Button 
                             size="sm" 

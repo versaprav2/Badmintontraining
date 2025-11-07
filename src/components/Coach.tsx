@@ -3,36 +3,39 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Lightbulb, Target, TrendingUp, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export const Coach = () => {
+  const { t } = useLanguage();
+  
   const coachingInsights = [
     {
-      category: "Technique",
+      category: t("coach.technique"),
       icon: Target,
       insights: [
-        "Focus on footwork drills - your court coverage can improve by 15-20%",
-        "Practice net play for 20 minutes daily to sharpen reactions",
-        "Work on backhand clear technique - aim for deeper shots"
+        t("coach.insight.footwork"),
+        t("coach.insight.netPlay"),
+        t("coach.insight.backhand")
       ],
       priority: "high"
     },
     {
-      category: "Strategy",
+      category: t("coach.strategy"),
       icon: Lightbulb,
       insights: [
-        "Vary your shot placement to keep opponents guessing",
-        "Use more deceptive shots in the frontcourt",
-        "Improve serve variation - mix short and long serves"
+        t("coach.insight.shotPlacement"),
+        t("coach.insight.deceptive"),
+        t("coach.insight.serve")
       ],
       priority: "medium"
     },
     {
-      category: "Physical",
+      category: t("coach.physical"),
       icon: TrendingUp,
       insights: [
-        "Add 2 cardio sessions per week for better endurance",
-        "Incorporate plyometric exercises for explosive power",
-        "Focus on core strength for better stability and rotation"
+        t("coach.insight.cardio"),
+        t("coach.insight.plyometric"),
+        t("coach.insight.core")
       ],
       priority: "medium"
     }
@@ -49,14 +52,14 @@ export const Coach = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold mb-2">Your Coach</h2>
-        <p className="text-muted-foreground">Personalized coaching insights and guidance</p>
+        <h2 className="text-3xl font-bold mb-2">{t("coach.title")}</h2>
+        <p className="text-muted-foreground">{t("coach.subtitle")}</p>
       </div>
 
       <Alert>
         <AlertCircle className="h-4 w-4" />
         <AlertDescription>
-          These insights are based on your training history, performance data, and current goals.
+          {t("coach.alert")}
         </AlertDescription>
       </Alert>
 
@@ -71,11 +74,11 @@ export const Coach = () => {
                   </div>
                   <div>
                     <CardTitle>{section.category}</CardTitle>
-                    <CardDescription>Areas to focus on</CardDescription>
+                    <CardDescription>{t("coach.areasToFocus")}</CardDescription>
                   </div>
                 </div>
                 <Badge variant={getPriorityColor(section.priority)}>
-                  {section.priority} priority
+                  {t(`coach.priority.${section.priority}`)}
                 </Badge>
               </div>
             </CardHeader>
@@ -95,13 +98,13 @@ export const Coach = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Weekly Focus</CardTitle>
-          <CardDescription>Recommended training emphasis for this week</CardDescription>
+          <CardTitle>{t("coach.weeklyFocus")}</CardTitle>
+          <CardDescription>{t("coach.weeklyFocus.desc")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Technique Drills</span>
+              <span>{t("coach.techniques")}</span>
               <span className="font-medium">40%</span>
             </div>
             <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -110,7 +113,7 @@ export const Coach = () => {
           </div>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Match Play</span>
+              <span>{t("coach.matchPlay")}</span>
               <span className="font-medium">30%</span>
             </div>
             <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -119,7 +122,7 @@ export const Coach = () => {
           </div>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Physical Conditioning</span>
+              <span>{t("coach.conditioning")}</span>
               <span className="font-medium">20%</span>
             </div>
             <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -128,7 +131,7 @@ export const Coach = () => {
           </div>
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
-              <span>Recovery</span>
+              <span>{t("coach.recovery")}</span>
               <span className="font-medium">10%</span>
             </div>
             <div className="h-2 bg-secondary rounded-full overflow-hidden">
@@ -139,7 +142,7 @@ export const Coach = () => {
       </Card>
 
       <div className="flex justify-end">
-        <Button>Schedule Coaching Session</Button>
+        <Button>{t("coach.scheduleSession")}</Button>
       </div>
     </div>
   );

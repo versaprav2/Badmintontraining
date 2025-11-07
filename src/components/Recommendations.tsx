@@ -2,8 +2,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock, Dumbbell, Video, BookOpen, TrendingUp } from "lucide-react";
+import { useLanguage } from "@/hooks/useLanguage";
 
 export const Recommendations = () => {
+  const { t } = useLanguage();
+  
   const recommendations = [
     {
       id: 1,
@@ -80,8 +83,8 @@ export const Recommendations = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-3xl font-bold mb-2">Recommendations</h2>
-        <p className="text-muted-foreground">Personalized suggestions based on your progress and goals</p>
+        <h2 className="text-3xl font-bold mb-2">{t("rec.title")}</h2>
+        <p className="text-muted-foreground">{t("rec.subtitle")}</p>
       </div>
 
       <div className="grid gap-6">
@@ -123,13 +126,13 @@ export const Recommendations = () => {
                 </div>
                 
                 <div className="p-3 rounded-lg bg-muted/50 text-sm">
-                  <span className="font-medium">Why recommended: </span>
+                  <span className="font-medium">{t("rec.whyRecommended")}</span>
                   <span className="text-muted-foreground">{rec.reason}</span>
                 </div>
 
                 <div className="flex gap-2">
-                  <Button className="flex-1">Start Now</Button>
-                  <Button variant="outline">Save for Later</Button>
+                  <Button className="flex-1">{t("rec.startNow")}</Button>
+                  <Button variant="outline">{t("rec.saveForLater")}</Button>
                 </div>
               </div>
             </CardContent>
@@ -139,14 +142,14 @@ export const Recommendations = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Get More Recommendations</CardTitle>
+          <CardTitle>{t("rec.getMore")}</CardTitle>
           <CardDescription>
-            Connect with a coach or complete more training sessions to unlock personalized insights
+            {t("rec.getMore.desc")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Button variant="outline" className="w-full">
-            Update Training Preferences
+            {t("rec.updatePreferences")}
           </Button>
         </CardContent>
       </Card>

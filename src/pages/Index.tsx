@@ -25,6 +25,7 @@ import heroImage from "@/assets/hero-badminton.jpg";
 import { toast } from "sonner";
 import { useGamification } from "@/hooks/useGamification";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
 
 type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements" | "periodization" | "coach" | "recommendations" | "video-review";
 
@@ -35,6 +36,7 @@ const Index = () => {
   const [shareData, setShareData] = useState<any>(null);
   const { addXP, updateStreak } = useGamification();
   const { user } = useAuth();
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Check if onboarding completed
@@ -126,10 +128,10 @@ const Index = () => {
               <div className="absolute inset-0 z-20 flex items-center justify-center">
                 <div className="text-center space-y-6 px-4">
                   <h1 className="text-5xl md:text-7xl font-bold text-white drop-shadow-lg">
-                    Elevate Your Game
+                    {t("home.hero.title")}
                   </h1>
                   <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto">
-                    Track matches, follow structured training, and reach your badminton potential
+                    {t("home.hero.subtitle")}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button
@@ -138,7 +140,7 @@ const Index = () => {
                       onClick={() => setCurrentView("plans")}
                       className="text-lg"
                     >
-                      View Training Plans
+                      {t("home.hero.viewPlans")}
                     </Button>
                     <Button
                       variant="outline"
@@ -146,7 +148,7 @@ const Index = () => {
                       onClick={() => setCurrentView("fundamentals")}
                       className="text-lg bg-white/10 text-white border-white hover:bg-white hover:text-primary backdrop-blur-sm"
                     >
-                      Practice Drills
+                      {t("home.hero.practiceDrills")}
                     </Button>
                   </div>
                 </div>
@@ -159,9 +161,9 @@ const Index = () => {
                 <div className="p-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
                   <Calendar className="w-8 h-8 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Training Plans</h3>
+                <h3 className="text-xl font-bold mb-2">{t("home.features.plans.title")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Structured programs from weekly to yearly
+                  {t("home.features.plans.desc")}
                 </p>
               </Card>
 
@@ -169,9 +171,9 @@ const Index = () => {
                 <div className="p-4 bg-gradient-to-br from-secondary/10 to-orange-500/10 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
                   <Target className="w-8 h-8 text-secondary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Fundamentals</h3>
+                <h3 className="text-xl font-bold mb-2">{t("home.features.fundamentals.title")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Master essential badminton techniques
+                  {t("home.features.fundamentals.desc")}
                 </p>
               </Card>
 
@@ -179,21 +181,21 @@ const Index = () => {
                 <div className="p-4 bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl w-fit mb-4 group-hover:scale-110 transition-transform">
                   <Award className="w-8 h-8 text-accent" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Achievements</h3>
+                <h3 className="text-xl font-bold mb-2">{t("home.features.achievements.title")}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Unlock badges and track your progress
+                  {t("home.features.achievements.desc")}
                 </p>
               </Card>
             </div>
 
             {/* CTA Section */}
             <Card className="p-12 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 border-2 border-primary/20 text-center">
-              <h2 className="text-4xl font-bold mb-4">Ready to become a better player?</h2>
+              <h2 className="text-4xl font-bold mb-4">{t("home.cta.title")}</h2>
               <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Join thousands of badminton players who are tracking their progress and achieving their goals
+                {t("home.cta.subtitle")}
               </p>
               <Button variant="gradient" size="lg" onClick={() => setCurrentView("dashboard")} className="text-lg">
-                View Your Dashboard
+                {t("home.cta.button")}
               </Button>
             </Card>
           </div>
@@ -212,20 +214,20 @@ const Index = () => {
             <div className="flex items-center h-16 px-4 gap-4">
               <SidebarTrigger />
               <h1 className="text-lg font-semibold">
-                {currentView === "home" && "Home"}
-                {currentView === "dashboard" && "Dashboard"}
-                {currentView === "progress" && "Progress"}
-                {currentView === "challenges" && "Challenges"}
-                {currentView === "goals" && "Goals"}
-                {currentView === "matches" && "Match Tracker"}
-                {currentView === "plans" && "Training Plans"}
-                {currentView === "fundamentals" && "Fundamentals"}
-                {currentView === "timer" && "Workout Timer"}
-                {currentView === "achievements" && "Achievements"}
-                {currentView === "periodization" && "Periodization"}
-                {currentView === "coach" && "Your Coach"}
-                {currentView === "recommendations" && "Recommendations"}
-                {currentView === "video-review" && "Video Review"}
+                {currentView === "home" && t("nav.home")}
+                {currentView === "dashboard" && t("nav.dashboard")}
+                {currentView === "progress" && t("nav.progress")}
+                {currentView === "challenges" && t("nav.challenges")}
+                {currentView === "goals" && t("nav.goals")}
+                {currentView === "matches" && t("nav.matches")}
+                {currentView === "plans" && t("nav.trainingPlans")}
+                {currentView === "fundamentals" && t("nav.fundamentals")}
+                {currentView === "timer" && t("nav.timer")}
+                {currentView === "achievements" && t("nav.achievements")}
+                {currentView === "periodization" && t("nav.periodization")}
+                {currentView === "coach" && t("nav.coach")}
+                {currentView === "recommendations" && t("nav.recommendations")}
+                {currentView === "video-review" && t("nav.videoReview")}
               </h1>
             </div>
           </header>
@@ -240,7 +242,7 @@ const Index = () => {
           {/* Footer */}
           <footer className="border-t py-6">
             <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-              <p>© 2025 BadmintonTrain. Train smarter, play better.</p>
+              <p>{t("footer.copyright")}</p>
             </div>
           </footer>
         </div>

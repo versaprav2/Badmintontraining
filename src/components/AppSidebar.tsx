@@ -14,7 +14,8 @@ import {
   TrendingUp,
   MessageSquare,
   Lightbulb,
-  Video
+  Video,
+  Languages
 } from "lucide-react";
 import {
   Sidebar,
@@ -28,6 +29,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
+import { useLanguage } from "@/hooks/useLanguage";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
 type View = "home" | "dashboard" | "progress" | "challenges" | "goals" | "matches" | "plans" | "fundamentals" | "timer" | "achievements" | "periodization" | "coach" | "recommendations" | "video-review";
@@ -37,35 +41,36 @@ interface AppSidebarProps {
   onViewChange: (view: View) => void;
 }
 
-const mainItems = [
-  { id: "home" as View, label: "Home", icon: Home },
-  { id: "dashboard" as View, label: "Dashboard", icon: Activity },
-  { id: "progress" as View, label: "Progress", icon: BarChart3 },
-];
+  const mainItems = [
+    { id: "home" as View, labelKey: "nav.home", icon: Home },
+    { id: "dashboard" as View, labelKey: "nav.dashboard", icon: Activity },
+    { id: "progress" as View, labelKey: "nav.progress", icon: BarChart3 },
+  ];
 
-const trainingItems = [
-  { id: "periodization" as View, label: "Periodization", icon: TrendingUp },
-  { id: "plans" as View, label: "Training Plans", icon: Calendar },
-  { id: "fundamentals" as View, label: "Fundamentals", icon: Target },
-  { id: "timer" as View, label: "Timer", icon: Timer },
-];
+  const trainingItems = [
+    { id: "periodization" as View, labelKey: "nav.periodization", icon: TrendingUp },
+    { id: "plans" as View, labelKey: "nav.trainingPlans", icon: Calendar },
+    { id: "fundamentals" as View, labelKey: "nav.fundamentals", icon: Target },
+    { id: "timer" as View, labelKey: "nav.timer", icon: Timer },
+  ];
 
-const trackingItems = [
-  { id: "matches" as View, label: "Matches", icon: Trophy },
-  { id: "challenges" as View, label: "Challenges", icon: Flame },
-  { id: "goals" as View, label: "Goals", icon: Flag },
-  { id: "achievements" as View, label: "Achievements", icon: Award },
-];
+  const trackingItems = [
+    { id: "matches" as View, labelKey: "nav.matches", icon: Trophy },
+    { id: "challenges" as View, labelKey: "nav.challenges", icon: Flame },
+    { id: "goals" as View, labelKey: "nav.goals", icon: Flag },
+    { id: "achievements" as View, labelKey: "nav.achievements", icon: Award },
+  ];
 
-const coachingItems = [
-  { id: "coach" as View, label: "Coach", icon: MessageSquare },
-  { id: "recommendations" as View, label: "Recommendations", icon: Lightbulb },
-  { id: "video-review" as View, label: "Video Review", icon: Video },
-];
+  const coachingItems = [
+    { id: "coach" as View, labelKey: "nav.coach", icon: MessageSquare },
+    { id: "recommendations" as View, labelKey: "nav.recommendations", icon: Lightbulb },
+    { id: "video-review" as View, labelKey: "nav.videoReview", icon: Video },
+  ];
 
 export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
   const { state } = useSidebar();
   const { user, signOut } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
   const collapsed = state === "collapsed";
 
   const handleLogout = async () => {
@@ -81,7 +86,7 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
           isActive={currentView === item.id}
         >
           <item.icon className="w-4 h-4" />
-          {!collapsed && <span>{item.label}</span>}
+          {!collapsed && <span>{t(item.labelKey)}</span>}
         </SidebarMenuButton>
       </SidebarMenuItem>
     ))
@@ -109,7 +114,7 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
 
         {/* Main Navigation */}
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Main</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>{t("nav.main")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {renderMenuItems(mainItems)}
@@ -119,7 +124,7 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
 
         {/* Training Section */}
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Training</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>{t("nav.training")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {renderMenuItems(trainingItems)}
@@ -129,7 +134,7 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
 
         {/* Tracking Section */}
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Track & Compete</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>{t("nav.trackCompete")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {renderMenuItems(trackingItems)}
@@ -139,7 +144,7 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
 
         {/* Coaching Section */}
         <SidebarGroup>
-          {!collapsed && <SidebarGroupLabel>Coaching & Analysis</SidebarGroupLabel>}
+          {!collapsed && <SidebarGroupLabel>{t("nav.coachingAnalysis")}</SidebarGroupLabel>}
           <SidebarGroupContent>
             <SidebarMenu>
               {renderMenuItems(coachingItems)}
@@ -151,6 +156,28 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
         <SidebarGroup className="mt-auto border-t pt-4">
           <SidebarGroupContent>
             <SidebarMenu>
+              {!collapsed && (
+                <SidebarMenuItem>
+                  <div className="px-3 py-2">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <Languages className="w-4 h-4" />
+                        <Label htmlFor="language-switch" className="text-sm cursor-pointer">
+                          {language === "en" ? "EN" : "DE"}
+                        </Label>
+                      </div>
+                      <Switch
+                        id="language-switch"
+                        checked={language === "de"}
+                        onCheckedChange={(checked) => {
+                          setLanguage(checked ? "de" : "en");
+                          toast.success(checked ? "Sprache auf Deutsch geändert" : "Language changed to English");
+                        }}
+                      />
+                    </div>
+                  </div>
+                </SidebarMenuItem>
+              )}
               <SidebarMenuItem>
                 <SidebarMenuButton>
                   <User className="w-4 h-4" />
@@ -160,7 +187,7 @@ export function AppSidebar({ currentView, onViewChange }: AppSidebarProps) {
               <SidebarMenuItem>
                 <SidebarMenuButton onClick={handleLogout}>
                   <LogOut className="w-4 h-4" />
-                  {!collapsed && <span>Logout</span>}
+                  {!collapsed && <span>{t("nav.logout")}</span>}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
