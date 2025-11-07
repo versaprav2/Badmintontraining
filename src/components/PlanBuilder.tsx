@@ -153,8 +153,15 @@ export function PlanBuilder({ onPlanCreated }: PlanBuilderProps) {
             )}
 
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setStep(1)} className="flex-1">Back</Button>
-              <Button onClick={() => setStep(3)} className="flex-1">Next</Button>
+              <Button variant="outline" onClick={() => {
+                console.log('Back button clicked, current step:', step);
+                setStep(1);
+              }} className="flex-1">Back</Button>
+              <Button onClick={() => {
+                console.log('Next button clicked from step 2', { duration, daysPerWeek, goal });
+                setStep(3);
+                console.log('Step should now be 3');
+              }} className="flex-1">Next</Button>
             </div>
           </CardContent>
         </Card>
