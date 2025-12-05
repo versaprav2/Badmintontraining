@@ -41,17 +41,17 @@ jobs:
       - name: Test FTP connection
         run: |
           echo "Testing FTP connection..."
-          curl -v --user "u473711539.badminton:${{ secrets.FTP_PASSWORD }}" ftp://195.35.44.150 --max-time 10
+          curl -v --user "u473711539.u473711539:${{ secrets.FTP_PASSWORD }}" ftp://195.35.44.150 --max-time 10
 
       # Correct FTP deployment
       - name: Deploy to badmintontraining.praveenpanthulu
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: 195.35.44.150
-          username: u473711539.badminton
+          username: u473711539.u473711539
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /public_html/badmintontraining/
+          server-dir: /home/u473711539/domains/praveenpanthulu.com/public_html/badmintontraining/
           dangerous-clean-slate: true
           exclude: |
             **/.git*
