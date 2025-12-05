@@ -51,7 +51,7 @@ jobs:
           username: u473711539.badmintontraining
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: server-dir:/home/u473711539/domains/praveenpanthulu.com/public_html/badmintontraining/
+          server-dir: /home/u473711539/domains/praveenpanthulu.com/public_html/badmintontraining/
           dangerous-clean-slate: true
           exclude: |
             **/.git*
