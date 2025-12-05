@@ -51,7 +51,7 @@ jobs:
           username: u473711539.sub
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /home/u473711539/domains/praveenpanthulu.com/public_html/sub/
+          server-dir: /sub/
           dangerous-clean-slate: true
           exclude: |
             **/.git*
