@@ -1,5 +1,4 @@
-name: Deploy to badmintontraining.praveenpanthulu
-
+name: Deploy to praveenpanthulu
 on:
   push:
     branches:
@@ -9,49 +8,46 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+        
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
-
+          
       - name: Install dependencies
         run: npm install
-
+        
       - name: Build
         run: npm run build
-
+        
       - name: Debug directory structure
         run: |
           echo "Listing build directory contents:"
           ls -la dist/
           echo "Checking for images:"
           find dist -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.svg" \)
-
+          
       - name: Add timestamp file for cache busting
         run: |
           echo "Deployment timestamp: $(date)" > dist/deploy-timestamp.txt
-
-      # FIXED — replaced invalid ftp.praveenpanthulu.com with 195.35.44.150
+          
       - name: Test FTP connection
         run: |
           echo "Testing FTP connection..."
-          curl -v --user "u473711539.sub:${{ secrets.FTP_PASSWORD }}" ftp://195.35.44.150 --max-time 10
-
-      # Correct FTP deployment
-      - name: Deploy to badmintontraining.praveenpanthulu
+          curl -v --user "u473711539.praveenpanthulu.com:${{ secrets.FTP_PASSWORD }}" ftp://195.35.44.150 --max-time 10
+          
+      - name: Deploy to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: 195.35.44.150
-          username: u473711539.sub
+          username: u473711539.praveenpanthulu.com
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /
+          server-dir: /public_html/badminton-trainer/
           dangerous-clean-slate: true
           exclude: |
             **/.git*
